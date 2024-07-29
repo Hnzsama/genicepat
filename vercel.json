@@ -1,0 +1,15 @@
+{
+    "builds": [
+        {
+            "src": "envlocal/main.py",
+            "use": "@vercel/phyton"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "envlocal/main.py"
+        }
+    ]
+        
+}

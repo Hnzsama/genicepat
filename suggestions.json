@@ -1,0 +1,214 @@
+[
+    {
+        "id_ID": {
+            "RAR": {
+                "Success": {
+                    "Title": "Nilai RAR Tinggi",
+                    "Message": "Prestasi luar biasa! Kampanye Anda telah menghasilkan pendapatan tinggi setelah pengembalian.",
+                    "message": "Metrik ini lebih tinggi dari target."
+                },
+                "Warning": {
+                    "Title": "Nilai RAR Berisiko",
+                    "Message": "Nilai RAR berada dalam rentang yang memerlukan perhatian. Pertimbangkan strategi untuk meningkatkan keuntungan bersih.",
+                    "message": "Metrik ini sama dengan target."
+                },
+                "Danger": {
+                    "Title": "Nilai RAR Rendah",
+                    "Message": "Perhatian! Nilai RAR rendah dapat menunjukkan kinerja kampanye yang kurang efektif. Evaluasi dan perbarui strategi targeting serta konten iklan untuk meningkatkan kinerja.",
+                    "message": "Metrik ini lebih rendah dari target."
+                }
+            },
+            "CTR": {
+                "Success": {
+                    "Title": "Nilai CTR Tinggi",
+                    "Message": "Hebat! Tingkat interaksi tinggi menunjukkan daya tarik iklan yang efektif.",
+                    "message": "Metrik ini lebih tinggi dari target."
+                },
+                "Warning": {
+                    "Title": "Nilai CTR Berisiko",
+                    "Message": "CTR berada dalam rentang berisiko. Pertimbangkan untuk menyempurnakan targeting atau pesan iklan.",
+                    "message": "Metrik ini sama dengan target."
+                },
+                "Danger": {
+                    "Title": "Nilai CTR Rendah",
+                    "Message": "Tingkat interaksi yang rendah mungkin memerlukan penyesuaian strategi iklan Anda. Tinjau targeting, kreativitas iklan, dan kalibrasi bid untuk menarik lebih banyak perhatian.",
+                    "message": "Metrik ini lebih rendah dari target."
+                }
+            },
+            "OCLP": {
+                "Success": {
+                    "Title": "Nilai OCLP Tinggi",
+                    "Message": "Fantastis! Biaya klik keluar yang rendah menunjukkan efisiensi dalam mengarahkan lalu lintas ke situs web Anda.",
+                    "message": "Metrik ini lebih tinggi dari target."
+                },
+                "Warning": {
+                    "Title": "Nilai OCLP Berisiko",
+                    "Message": "OCLP berada pada tingkat berisiko. Pertimbangkan untuk mengoptimalkan halaman arahan atau strategi targeting.",
+                    "message": "Metrik ini sama dengan target."
+                },
+                "Danger": {
+                    "Title": "Nilai OCLP Rendah",
+                    "Message": "Biaya klik keluar yang rendah dapat menunjukkan kesulitan dalam menarik perhatian pengguna. Periksa apakah halaman arahan Anda memenuhi harapan pengguna dan pertimbangkan perbaikan dalam desain atau konten.",
+                    "message": "Metrik ini lebih rendah dari target."
+                }
+            },
+            "ROAS": {
+                "Success": {
+                    "Title": "Nilai ROAS Tinggi",
+                    "Message": "Wow! Kampanye Anda telah menghasilkan pendapatan fantastis dibandingkan dengan biaya iklan.",
+                    "message": "Metrik ini lebih tinggi dari target."
+                },
+                "Warning": {
+                    "Title": "Nilai ROAS Berisiko",
+                    "Message": "ROAS berada pada tingkat berisiko. Evaluasi strategi periklanan dan retargeting.",
+                    "message": "Metrik ini sama dengan target."
+                },
+                "Danger": {
+                    "Title": "Nilai ROAS Rendah",
+                    "Message": "Peringatan! ROAS rendah dapat menunjukkan kinerja kampanye yang kurang efektif. Tinjau strategi targeting dan taktik penjualan.",
+                    "message": "Metrik ini lebih rendah dari target."
+                }
+            },
+            "CPR": {
+                "Success": {
+                    "Title": "Nilai CPR Rendah (Bagus)",
+                    "Message": "Hebat! Biaya per hasil yang rendah menunjukkan efisiensi dalam mencapai tujuan kampanye Anda.",
+                    "message": "Metrik ini lebih tinggi dari target."
+                },
+                "Warning": {
+                    "Title": "Nilai CPR Berisiko",
+                    "Message": "CPR berada dalam rentang berisiko. Amati dan evaluasi apakah hasil proporsional dengan biaya yang dikeluarkan.",
+                    "message": "Metrik ini sama dengan target."
+                },
+                "Danger": {
+                    "Title": "Nilai CPR Melebihi Batas",
+                    "Message": "Perhatian! CPR tinggi mungkin memerlukan peninjauan strategi kampanye Anda. Pertimbangkan penyesuaian targeting atau perubahan taktik promosi.",
+                    "message": "Metrik ini lebih rendah dari target."
+                }
+            },
+            
+            "CPC": {
+                "Success": {
+                    "Title": "Nilai CPC Rendah (Baik)",
+                    "Message": "Luar biasa! Biaya per klik yang rendah menunjukkan efisiensi dalam mengarahkan pengguna ke situs web Anda.",
+                    "message": "Metrik ini lebih tinggi dari target."
+                },
+                "Warning": {
+                    "Title": "Nilai CPC Berisiko",
+                    "Message": "CPC berada pada tingkat berisiko. Pertimbangkan strategi targeting atau penyesuaian penawaran klik.",
+                    "message": "Metrik ini sama dengan target."
+                },
+                "Danger": {
+                    "Title": "Nilai CPC Melebihi Batas",
+                    "Message": "Peringatan! CPC tinggi dapat mengurangi efisiensi pengeluaran periklanan Anda. Tinjau penawaran, skor kualitas iklan, dan relevansi iklan.",
+                    "message": "Metrik ini lebih rendah dari target."
+                }
+            }
+        },
+
+        "en_US": {
+            "RAR": {
+                "Success": {
+                    "Title": "High RAR Value",
+                    "Message": "Outstanding achievement! Your campaign has generated high revenue after returns.",
+                    "message": "The metric is higher than the target."
+                },
+                "Warning": {
+                    "Title": "RAR Value at Risk",
+                    "Message": "The RAR value is in a range that needs attention. Consider strategies to improve net profit.",
+                    "message": "The metric is equal to the target."
+                },
+                "Danger": {
+                    "Title": "Low RAR Value",
+                    "Message": "Attention! A low RAR value may indicate less effective campaign performance. Evaluate and update targeting strategies and ad content to enhance performance.",
+                    "message": "The metric is lower than the target."
+                }
+            },
+            "CTR": {
+                "Success": {
+                    "Title": "High CTR Value",
+                    "Message": "Great! A high interaction rate indicates effective ad appeal.",
+                    "message": "The metric is higher than the target."
+                },
+                "Warning": {
+                    "Title": "CTR Value at Risk",
+                    "Message": "The CTR is in a risky range. Consider refining targeting or ad messaging.",
+                    "message": "The metric is equal to the target."
+                },
+                "Danger": {
+                    "Title": "Low CTR Value",
+                    "Message": "A low interaction rate may require adjustments to your ad strategy. Review targeting, ad creativity, and bid calibration to attract more attention.",
+                    "message": "The metric is lower than the target."
+                }
+            },
+            "OCLP": {
+                "Success": {
+                    "Title": "High OCLP Value",
+                    "Message": "Fantastic! A low outbound click cost indicates efficiency in driving traffic to your website.",
+                    "message": "The metric is higher than the target."
+                },
+                "Warning": {
+                    "Title": "OCLP Value at Risk",
+                    "Message": "OCLP is at a risky level. Consider optimizing the landing page or targeting strategy.",
+                    "message": "The metric is equal to the target."
+                },
+                "Danger": {
+                    "Title": "Low OCLP Value",
+                    "Message": "A low outbound click cost may indicate difficulties in attracting user attention. Check if your landing page meets user expectations and consider improvements in design or content.",
+                    "message": "The metric is lower than the target."
+                }
+            },
+            "ROAS": {
+                "Success": {
+                    "Title": "High ROAS Value",
+                    "Message": "Wow! Your campaign has generated fantastic revenue compared to advertising costs.",
+                    "message": "The metric is higher than the target."
+                },
+                "Warning": {
+                    "Title": "ROAS Value at Risk",
+                    "Message": "ROAS is at a risky level. Evaluate advertising and retargeting strategies.",
+                    "message": "The metric is equal to the target."
+                },
+                "Danger": {
+                    "Title": "Low ROAS Value",
+                    "Message": "Warning! A low ROAS may indicate less effective campaign performance. Review targeting strategies and sales tactics.",
+                    "message": "The metric is lower than the target."
+                }
+            },
+            "CPR": {
+                "Success": {
+                    "Title": "Low CPR Value (Good)",
+                    "Message": "Great! A low cost per result indicates efficiency in achieving your campaign goals.",
+                    "message": "The metric is higher than the target."
+                },
+                "Warning": {
+                    "Title": "CPR Value at Risk",
+                    "Message": "CPR is in a risky range. Observe and evaluate if the results are proportional to the costs incurred.",
+                    "message": "The metric is equal to the target."
+                },
+                "Danger": {
+                    "Title": "CPR Value Exceeds Limit",
+                    "Message": "Attention! A high CPR may require a review of your campaign strategy. Consider adjustments to targeting or changes in promotional tactics.",
+                    "message": "The metric is lower than the target."
+                }
+            },
+            "CPC": {
+                "Success": {
+                    "Title": "Low CPC Value (Good)",
+                    "Message": "Excellent! A low cost per click indicates efficiency in directing users to your website.",
+                    "message": "The metric is higher than the target."
+                },
+                "Warning": {
+                    "Title": "CPC Value at Risk",
+                    "Message": "CPC is at a risky level. Consider targeting strategies or adjustments to click bid.",
+                    "message": "The metric is equal to the target."
+                },
+                "Danger": {
+                    "Title": "CPC Value Exceeds Limit",
+                    "Message": "Warning! A high CPC may reduce the efficiency of your advertising expenses. Review bid, ad quality score, and ad relevance.",
+                    "message": "The metric is lower than the target."
+                }
+            }
+        }
+    }
+]

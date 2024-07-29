@@ -1,0 +1,192 @@
+from fastapi import FastAPI, HTTPException, Depends, UploadFile, File, Form, Query, status
+from config import get_database_connection, SECRET_KEY, ALGORITHM
+from PIL import Image
+from mongonator import MongoClientWithPagination, ASCENDING, Paginate, DESCENDING
+from urllib.parse import unquote
+from pymongo.errors import DuplicateKeyError
+from bson import ObjectId
+from passlib.context import CryptContext
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pymongo import MongoClient
+import os
+from pymongo import IndexModel, ASCENDING
+from typing import Optional, Union, List
+from datetime import datetime, timedelta
+import jwt
+import re
+import calendar
+from pydantic import EmailStr
+from enum import Enum
+
+app = FastAPI()
+client, db, jurnal_collection, jadwal_collection, periode_collection, pelajaran_collection, jampelajaran_collection, kelas_collection, jadwalmingguan_collection, guru_collection= get_database_connection("mongodb://localhost:27017/")
+
+upload_dir = "uploads"
+
+# Enkripsi dan verifikasi kata sandi
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+if not os.path.exists(upload_dir):
+    os.makedirs(upload_dir)
+
+# JWT utils
+
+def generate_jwt_token(nama, roles: str) -> str:
+    payload = {"nama": nama, "roles": roles, "exp": datetime.utcnow() + timedelta(days=1)}
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM).encode("utf-8")
+    return token
+
+def decode_jwt_token(token):
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    return payload
+
+# Dependencies
+
+def get_current_user(roles: str = Depends(HTTPBearer())) -> str:
+    """
+    This dependency gets the current user's roles from the JWT token in the header.
+    """
+    credentials_data = decode_jwt_token(roles.credentials)
+    roles = credentials_data.get("roles", [])
+    if not roles:
+        raise HTTPException(status_code=403, detail="Anda tidak memiliki izin untuk mengakses endpoint ini")
+    return roles
+
+@app.post("/register", tags=["Register & Login"])
+def register(nama: str, password: str, email: EmailStr, is_admin: bool) -> None:
+    if guru_collection.find_one({"nama": nama}) is not None:
+        raise HTTPException(status_code=400, detail="nama sudah digunakan")
+
+    hashed_password = pwd_context.hash(password)
+    guru_collection.insert_one({"nama": nama, "password": hashed_password, "email": email, "is_admin": is_admin})
+
+    return None
+
+@app.post("/login", tags=["Register & Login"])
+def login(nama: str, password: str) -> str:
+    user = guru_collection.find_one({"nama": nama})
+    if user is None:
+        raise HTTPException(status_code=401, detail="nama or password is incorrect")
+
+    hashed_password = pwd_context.verify(password, user["password"])
+    if not hashed_password:
+        raise HTTPException(status_code=401, detail="nama or password is incorrect")
+
+    roles = "guru" if user["is_admin"] is False else "admin"
+    token = generate_jwt_token(nama, roles)
+    return token
+
+# Rute untuk pendaftaran pengguna
+
+@app.get("/periode",  tags=["Periode"], dependencies=[Depends(get_current_user)])
+def data_periode(search: str = None, page: int = 1, limit: int = 5, roles: str = Depends(get_current_user)):
+    # Cek role user
+    if "guru" in roles or "admin" in roles:
+        query_filter = {}
+        if search is not None:
+            regex_pattern = f".*{search}.*"
+            query_filter["$or"] = [
+                {"nama": {"$regex": regex_pattern, "$options": "i"}}
+            ]
+        results = Paginate(collection=periode_collection, limit=limit, query=query_filter, projection={'nama': 1,'is_aktif': 1, 'test': 1} ,ordering_field="_id", ordering_case=ASCENDING, automatic_pagination=False).paginate()
+        result1 = Paginate(collection=periode_collection, limit=limit, query=query_filter, projection={'nama': 1,'is_aktif': 1, 'test': 1} ,ordering_field="_id", ordering_case=ASCENDING, automatic_pagination=False, next_page=results.next_page).paginate()
+        if page == 1:
+            # Convert the results to a list
+            results_list = list(results.response)
+            all_jurnal = [
+                {
+                    "nama": jurnal["nama"],
+                    "is_aktif": jurnal["is_aktif"],
+                    **({"test": jurnal["test"]} if "test" in jurnal else {})
+                }
+                for jurnal in results_list
+            ]
+            if not all_jurnal:
+                return {"message": "Data Periode Kosong"}
+            return all_jurnal
+        else:
+            # Convert the results to a list
+            results_list = list(result1.response)
+            all_jurnal = [
+                {
+                    "nama": jurnal["nama"],
+                    "is_aktif": jurnal["is_aktif"],
+                    **({"test": jurnal["test"]} if "test" in jurnal else {})
+                }
+                for jurnal in results_list
+            ]
+
+            # Return the results
+            if not all_jurnal:
+                return {"message": "Data Periode Kosong"}
+            return all_jurnal
+    else:
+        raise HTTPException(status_code=403, detail="Anda tidak memiliki izin untuk mengakses endpoint ini")
+                            
+
+@app.post("/periode", tags=["Periode"], dependencies=[Depends(get_current_user)])
+def tambah_data_periode(nama: str = Form(...), roles: str = Depends(get_current_user)):
+    # Cek role user
+    if "admin" in roles:
+        # Periksa apakah periode sudah digunakan
+        existing_periode = periode_collection.find_one({"nama": nama})
+        if existing_periode:
+            raise HTTPException(status_code=400, detail="PERIODE sudah digunakan")
+
+        periode = {
+            "nama": nama,
+            "is_aktif": True
+        }
+        id = periode_collection.insert_one(periode).inserted_id
+        return {
+            "_id": str(id),
+            "nama": periode["nama"],
+            "is_aktif": periode["is_aktif"]
+        }
+    else:
+        raise HTTPException(status_code=403, detail="Anda tidak memiliki izin untuk mengakses endpoint ini")
+
+@app.patch("/periode/{periode_id}", tags=["Periode"], dependencies=[Depends(get_current_user)])
+def ubah_data_periode(periode_id: str, nama: str = Form(None), is_aktif: bool = Form(None), roles: str = Depends(get_current_user)):
+
+    if "admin" in roles:
+        # Convert the string ID to ObjectId
+        obj_id = ObjectId(periode_id)
+
+        periode = periode_collection.find_one({"_id": obj_id})
+        if periode is None:
+            raise HTTPException(status_code=404, detail="PERIODE tidak ditemukan")
+
+        update_data = {}
+        if nama is not None:
+            update_data["nama"] = nama
+        if is_aktif is not None:
+            update_data["is_aktif"] = is_aktif
+
+        periode_collection.update_one({"_id": obj_id}, {"$set": update_data})
+
+        return {
+            "_id": str(periode["_id"]),
+            "nama": periode["nama"],
+            "is_aktif": periode["is_aktif"]
+        }
+
+    else:
+        raise HTTPException(status_code=403, detail="Anda tidak memiliki izin untuk mengakses endpoint ini")
+
+@app.delete("/periode/{periode_id}", tags=["Periode"], dependencies=[Depends(get_current_user)])
+def hapus_data_periode(periode_id: str, roles: str = Depends(get_current_user)):
+
+    if "admin" in roles:
+        # Convert the string ID to ObjectId
+        obj_id = ObjectId(periode_id)
+
+        periode = periode_collection.find_one({"_id": obj_id})
+        if periode is None:
+            raise HTTPException(status_code=404, detail="PERIODE tidak ditemukan")
+
+        periode_collection.delete_one({"_id": obj_id})
+        return {"PERIODE dihapus": None}
+
+    else:
+        raise HTTPException(status_code=403, detail="Anda tidak memiliki izin untuk mengakses endpoint ini")
